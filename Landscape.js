@@ -10,10 +10,10 @@ function setup() {
   
   //array for noise values
   for (let r = 0; r < width; r++){
-		//noise returns a value between 1 and 0
-		noiseArray[r] = noise(xOff) * height/2;
-		xOff = xOff + 0.005;
-    }
+	//noise returns a value between 1 and 0
+	noiseArray[r] = noise(xOff) * height/2;
+	xOff = xOff + 0.005;
+   }
   
   //poplulate rain array
     for (let i=0; i< 300; i++) {
@@ -28,7 +28,7 @@ function setup() {
 
 function draw() {
   background(0);
-  // color variables that change with noise (for the kite)
+  
   let r = 255 * noise(t+9);
   let g = 255 * noise(t+22);
   let b = 255 * noise(t+13);
@@ -37,8 +37,16 @@ function draw() {
   fill(255, 235, 87, 255);
   rect(0, 0, width+1, height+1)
   
+  // fix this later! there has to be a better way to do this
+  if (mouseIsPressed) {
+    fill(255);
+  rect(0, 0, width+1, height+1)
+    }
+  else {
+  
   fill(220, 100 , 100, pmouseY);
   rect(0, 0, width+1, height+1)
+  }
   
   //drawing rain
   for (let i=0; i< 300; i++) {
@@ -223,7 +231,7 @@ class Frame3 extends Frame {
       }
       else {
         this.color1 = color (61, 110, 103)
-      }
+    }
   }
 }
   
@@ -233,4 +241,3 @@ class Frame3 extends Frame {
 
 	return myArray;
 }
- 
