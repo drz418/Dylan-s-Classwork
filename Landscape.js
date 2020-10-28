@@ -28,7 +28,7 @@ function setup() {
 
 function draw() {
   background(0);
-  
+  // color variables that change with noise (for the kite)
   let r = 255 * noise(t+9);
   let g = 255 * noise(t+22);
   let b = 255 * noise(t+13);
