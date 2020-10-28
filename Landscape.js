@@ -4,17 +4,17 @@ let rain = [];
 let xOff = 0.0;
 
 
-function setup() {
+function setup() {  
   createCanvas(900, 550);
   t = 0;
-
+  
   //array for noise values
   for (let r = 0; r < width; r++){
 		//noise returns a value between 1 and 0
 		noiseArray[r] = noise(xOff) * height/2;
 		xOff = xOff + 0.005;
     }
-
+  
   //poplulate rain array
     for (let i=0; i< 300; i++) {
       rain[i] = new Rain;
@@ -27,26 +27,26 @@ function setup() {
 }
 
 function draw() {
-  background(200);
-
+  background(0);
+  
   let r = 255 * noise(t+9);
   let g = 255 * noise(t+22);
   let b = 255 * noise(t+13);
   //background lightens with mouse position
-
-  fill(255, 235, 87);
+  
+  fill(255, 235, 87, 255);
   rect(0, 0, width+1, height+1)
-
-  fill(220, 100 , 100,pmouseY);
+  
+  fill(220, 100 , 100, pmouseY);
   rect(0, 0, width+1, height+1)
-
+  
   //drawing rain
   for (let i=0; i< 300; i++) {
-
+    
   rain[i].show();
   rain[i].drops();
      }
-
+  
   // stalactites shape
   fill(230, 200);
 	beginShape();
@@ -56,14 +56,23 @@ function draw() {
 	}
     vertex (width, 0);
 	endShape();
-
-  // water
+  
+  // water calm and relfective or frenetic 
+  if (mouseIsPressed) {
+    for (let x = 0; x < width+1; x++) {
+  let y = randomGaussian(350, 10);
+  stroke(1);    
+  line(x, width, x, y);
+  line(200, width, x, y);
+    }
+  }
+  else {
     rect (0, height/3*2, width);
-  //reflections on the water
-    noStroke();
+      noStroke();
     fill(255,80);
     rect(random(width), random(height/3*2, height), random(10,48), random(4,6));
-
+  }
+  
   //kite
     fill(r,g,b);
     noStroke();
@@ -73,22 +82,22 @@ function draw() {
       stroke(r,g,b);
       bezier (mouseX-55, mouseY+55, mouseX-115, mouseY+65, mouseX-55, mouseY+125, mouseX-115, mouseY+135)
     }
-    else {
+    else { 
       quad (mouseX+45, mouseY+10, mouseX, mouseY, mouseX+10, mouseY+45, mouseX+55, mouseY+55) // kite tilting left
-      noFill();
+      noFill();  
       stroke(r,g,b);
       bezier(mouseX+54, mouseY+54, mouseX+125, mouseY+65, mouseX+55, mouseY+125, mouseX+125, mouseY+135);
     }
-
+  
 //foreground hills
   if (mouseIsPressed) {
     c=255; c2= 255; c3= 255; c4 = 255;
     }
   else {
-    c = 0; c2 = 100; c3 = pmouseY; c4 = 255;
+    c = 0; c2 = 100; c3 = pmouseY; c4 = pmouseY;
   }
   noStroke();
-  fill (c, c2, c3, c4)
+  fill (c, c2, c3, 255)
   beginShape();
     vertex (0, height);
 	for (let r = 0; r < noiseArray.length;r++){
@@ -98,7 +107,7 @@ function draw() {
 	endShape();
     noiseArray = shiftArray(noiseArray,noise(xOff) * height/2);
 	xOff = xOff + 0.005;
-
+  
   //drawing foreground frames
     level2.show();
     level1.show()
@@ -106,16 +115,16 @@ function draw() {
     level0.click();
     level1.click();
     level2.click();
-
+  
   t = t + 0.01; // controls the noise severity in the kite color
 }
 
 function Rain () {
   // drops are spread randomly throughout x/y axis
-  this.x = random(0, width);
+  this.x = random(0, width); 
   this.y = random (0, height)
-  //shows the rain
-  this.show = function () {
+  //shows the rain 
+  this.show = function () { 
     noStroke();
     fill (180, random(40, 100)); // rain transparency is varied
     ellipse (this.x, this.y, 2, 12)
@@ -123,16 +132,16 @@ function Rain () {
   // makes the rain fall and resets each instance once they exceed the height
   this.drops = function () {
     this.y+= 7;
-
+    
     if (this.y> height) {
       this.y = 0;
     }
   }
 }
-
+ 
   class Frame {
   constructor () {
-
+    
     this.leftMax = 40;
     this.leftMin = 10;
     this.rightMin = width-40;
@@ -141,11 +150,11 @@ function Rain () {
     this.topMax =30;
     this.bottomMin = height-40;
     this.bottomMax= height-20;
-
-    this.color1 = color (3, 13, 56) // navy // color variable has to be scoped correctly
+    
+    this.color1 = color (3, 13, 56) // navy // color variable has to be scoped correctly 
     this.shadow = color (50, 30)
   }
-
+  
     click () {
        if (mouseIsPressed) {
       this.color1 = color (0)
@@ -154,7 +163,7 @@ function Rain () {
         this.color1 = color (3, 13, 56)
       }
     }
-
+    
   show () {
       let xL = map(mouseX, 0, width, this.leftMin, this.leftMax);   // left box map
       let xR = map(mouseX, 0, width, this.rightMin, this.rightMax);   // right box map
@@ -165,7 +174,7 @@ function Rain () {
       rect (0,0,xL*1.2,height);   // left box shadow
       //rect (xR, 0, width, height);   // right box
       rect (0+xL*1.2, 0, width, yT*1.3); // top box shadow
-      //rect (0, yB, width, height); // bottom box
+      //rect (0, yB, width, height); // bottom box  
 
       noStroke ();
       fill (this.color1);
@@ -184,10 +193,10 @@ class Frame2 extends Frame {
     this.rightMin = width-60;
     this.topMax =60;
     this.bottomMin = height-60;
-
+    
     this.color1 = color (3, 81, 87) //bluegreen
   }
-
+    
     click () {
        if (mouseIsPressed) {
       this.color1 = color (255)
@@ -204,7 +213,7 @@ class Frame3 extends Frame {
     this.rightMin = width-80;
     this.topMax =80;
     this.bottomMin = height-80;
-
+    
     this.color1 = color (61, 110, 103) //seafoam
     this.shadow = color (50, 0)
     }
@@ -217,11 +226,11 @@ class Frame3 extends Frame {
       }
   }
 }
-
+  
   function shiftArray(myArray,myValue){
 	myArray.shift();//shift removes the first position in the array
 	myArray.push(myValue); //push adds an element to an array
 
 	return myArray;
 }
-  
+ 
