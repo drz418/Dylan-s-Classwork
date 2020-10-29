@@ -19,7 +19,7 @@ function setup() {
     for (let i=0; i< 300; i++) {
       rain[i] = new Rain;
       }
-  // defining variables
+  // defining variables for class instances 
   level0 = new Frame ();
   level1 = new Frame2();
   level2 = new Frame3();
@@ -29,6 +29,8 @@ function setup() {
 function draw() {
   background(0);
   
+  //variables tied to noise for the changing kite fill
+  // starting point based of code from genekogan.com/code/p5js-perlin-noise/
   let r = 255 * noise(t+9);
   let g = 255 * noise(t+22);
   let b = 255 * noise(t+13);
@@ -37,7 +39,7 @@ function draw() {
   fill(255, 235, 87, 255);
   rect(0, 0, width+1, height+1)
   
-  // fix this later! there has to be a better way to do this
+  // makes the background change color - fix this later! there has to be a better way 
   if (mouseIsPressed) {
     fill(255);
   rect(0, 0, width+1, height+1)
@@ -55,7 +57,7 @@ function draw() {
   rain[i].drops();
      }
   
-  // stalactites shape
+  // stalactites or background mountain shape based on the one dimensional noise that we covered in class
   fill(230, 200);
 	beginShape();
     vertex (0, 0);
@@ -65,7 +67,7 @@ function draw() {
     vertex (width, 0);
 	endShape();
   
-  // water calm and relfective or frenetic 
+  // conditional statement for if the water is calm and relfective or frenetic 
   if (mouseIsPressed) {
     for (let x = 0; x < width+1; x++) {
   let y = randomGaussian(350, 10);
@@ -81,7 +83,7 @@ function draw() {
     rect(random(width), random(height/3*2, height), random(10,48), random(4,6));
   }
   
-  //kite
+  //kite follows the directionality of the mouse position compared to the previous mouse position
     fill(r,g,b);
     noStroke();
     if (mouseX+1 > pmouseX) {
@@ -97,7 +99,7 @@ function draw() {
       bezier(mouseX+54, mouseY+54, mouseX+125, mouseY+65, mouseX+55, mouseY+125, mouseX+125, mouseY+135);
     }
   
-//foreground hills
+//foreground hills - again one dimensional noise
   if (mouseIsPressed) {
     c=255; c2= 255; c3= 255; c4 = 255;
     }
@@ -137,7 +139,7 @@ function Rain () {
     fill (180, random(40, 100)); // rain transparency is varied
     ellipse (this.x, this.y, 2, 12)
     }
-  // makes the rain fall and resets each instance once they exceed the height
+  // makes the rain fall and resets each instance once they exceed the height of the canvas
   this.drops = function () {
     this.y+= 7;
     
@@ -163,6 +165,7 @@ function Rain () {
     this.shadow = color (50, 30)
   }
   
+  // chosing frame color to between black and color
     click () {
        if (mouseIsPressed) {
       this.color1 = color (0)
